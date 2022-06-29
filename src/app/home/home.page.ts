@@ -10,6 +10,7 @@ import { Platform } from '@ionic/angular';
 export class HomePage {
   // konfigurasi sqlite
   databaseObj: SQLiteObject;
+  db = new SQLite();
   readonly database_name: string = 'inixindo.db';
   readonly table_name: string = 'inixindotable';
   model_name: string = '';
@@ -18,10 +19,12 @@ export class HomePage {
   update_active: boolean;
   to_update_item: any;
 
+  // constructor() {}
   constructor(private platform: Platform, private sqlite: SQLite) {
     this.platform
       .ready()
       .then(() => {
+        console.log('Platform is ready');
         this.createDB();
       })
       .catch((error) => {
@@ -30,7 +33,7 @@ export class HomePage {
   }
 
   // membuat database baru
-  createDB() {
+  createDB(): void {
     this.sqlite
       .create({
         name: this.database_name,
@@ -38,6 +41,7 @@ export class HomePage {
       })
       .then((db: SQLiteObject) => {
         this.databaseObj = db;
+        console.log('DB Created');
         alert('Database is created!');
       })
       .catch((error) => {
@@ -52,7 +56,7 @@ export class HomePage {
   createTable() {
     this.databaseObj
       .executeSql(
-        `CREATE TABLE IF NOT EXISTS ${this.table_name} (uid INTEGER PRIMARY KEY AUTO_INCREMENT, uname VARCHAR(30))`,
+        `CREATE TABLE IF NOT EXISTS ${this.table_name} (uid INTEGER PRIMARY KEY, uname VARCHAR(30))`,
         []
       )
       .then(() => {
