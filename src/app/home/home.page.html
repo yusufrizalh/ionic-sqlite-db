@@ -1,20 +1,54 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title> Ionic SQLite </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content padding text-center>
+  <ion-button expand="block" color="secondary" (click)="createDB()">
+    Create Database
+  </ion-button>
+  <ion-button expand="block" color="secondary" (click)="createTable()">
+    Create Table
+  </ion-button>
+  <ion-button expand="block" color="secondary" (click)="getAllData()">
+    Get All Data
+  </ion-button>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-item-divider>
+    <ion-input
+      placeholder="Enter username"
+      [(ngModel)]="model_name"
+    ></ion-input>
+    <ng-container *ngIf="updateActive; else templateCreate">
+      <ion-button expand="block" color="warning" (click)="updateRow()">
+        Update Data
+      </ion-button>
+    </ng-container>
+    <ng-template #templateCreate>
+      <ion-button expand="block" color="primary" (click)="insertRow()">
+        Insert Data
+      </ion-button>
+    </ng-template>
+  </ion-item-divider>
+  <!-- menampilkan data -->
+  <ion-grid>
+    <ion-row>
+      <ion-col>User ID</ion-col>
+      <ion-col>User Name</ion-col>
+      <ion-col>Action</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of row_data">
+      <ion-col> {{ item.uid }} </ion-col>
+      <ion-col> {{ item.uname }} </ion-col>
+      <ion-col>
+        <ion-button (click)="deleteRow(item)" size="small" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+        <ion-button (click)="enableUpdate(item)" size="small" color="warning">
+          <ion-icon name="create"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
